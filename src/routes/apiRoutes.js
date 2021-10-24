@@ -1,8 +1,7 @@
 const { Db } = require('mongodb');
 const UsersController = require('../controllers/users.controller');
-const express = require('express');
+const SessionController = require('../controllers/session.controller');
 const router = require('express').Router();
-const UserSchema = require('./../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -21,6 +20,7 @@ router.post('/login', async (req, res) => {
         if (userExists.length > 0) {
             // comparar con el hash hecho en sign up
             const cmp = await bcrypt.compare(b.pwd, userExists[0].pwd);
+            userName = userExists[0].userName;
             // pwds == 
             if (cmp) {
                 // gen token
@@ -28,6 +28,8 @@ router.post('/login', async (req, res) => {
                     id: userExists._id,
                     userName: userExists.userName
                 }, jwt_secret);
+                // postear la sesión activa de ESTE usuario
+                await SessionController.postSession({ token, userName });
                 res.send(token);
             }
             // pwds !=
