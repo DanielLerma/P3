@@ -1,12 +1,6 @@
 const { Db } = require('mongodb');
 const UsersController = require('../controllers/users.controller');
-const express = require('express');
 const router = require('express').Router();
-const UserSchema = require('./../models/user');
-const bcrypt = require('bcryptjs');
-
-const swaggerJSDoc = require('swagger-jsdoc');
-const swaggerUi = require('swagger-ui-express');
 
 const bodyParser = require('body-parser');
 router.use(bodyParser.json());
@@ -19,7 +13,7 @@ router.get('/', async (req, res) => {
     } catch (err) {
         res.send(err).status(500);
     }
-})
+});
 
 router.get('/:email', async (req, res) => {
     let e = req.params.email.split('=')[1];
@@ -31,6 +25,6 @@ router.get('/:email', async (req, res) => {
         console.log(user);
         res.send('No user found');
     }
-})
+});
 
 module.exports = router;

@@ -5,6 +5,7 @@ const Database = require('./src/models/database');
 const MongoClient = require('mongodb').MongoClient;
 const userRoutes = require('./src/routes/userRoutes');
 const apiRoutes = require('./src/routes/apiRoutes');
+const discussionGroupRoutes = require('./src/routes/discussionGroup');
 const mongoose = require("mongoose");
 
 const swaggerJSDoc = require('swagger-jsdoc');
@@ -135,6 +136,7 @@ db.once("open", function () {
 app.use(router);
 app.use('/users', userRoutes);
 app.use('/api', apiRoutes);
+app.use('/discussion-group', discussionGroupRoutes);
 
 app.listen(port, () => {
     console.log("Server is running at port ", port);
