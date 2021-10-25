@@ -4,10 +4,9 @@ const SessionController = require('../controllers/session.controller');
 const router = require('express').Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
-// para generar secret de jwt
-const crypto = require('crypto');
-const jwt_secret = crypto.randomBytes(32);
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const bodyParser = require('body-parser');
 router.use(bodyParser.json());
@@ -17,17 +16,19 @@ router.post('/login', async (req, res) => {
     if (b.userName && b.pwd) {
         // checar si existe userName
         let userExists = await UsersController.getUserByUserName(b.userName);
-        if (userExists.length > 0) {
+        console.log(userExists);
+        if (userExists) {
             // comparar con el hash hecho en sign up
-            const cmp = await bcrypt.compare(b.pwd, userExists[0].pwd);
-            userName = userExists[0].userName;
+            const cmp = await bcrypt.compare(b.pwd, userExists.pwd);
+            userName = userExists.userName;
             // pwds == 
             if (cmp) {
                 // gen token
                 const token = jwt.sign({
                     id: userExists._id,
                     userName: userExists.userName
-                }, jwt_secret);
+                }, JWT_SECRET);
+                console.log(token);
                 // postear la sesión activa de ESTE usuario
                 await SessionController.postSession({ token, userName });
                 res.send(token);
@@ -51,7 +52,7 @@ router.post('/register', async (req, res) => {
     if (b.name && b.lastName && b.userName && b.email && b.pwd) {
         let existingUser = await UsersController.getUserByEmail(b.email);
         console.log(existingUser);
-        if (existingUser.length > 0) {
+        if (existingUser != null) {
             res.send('Not posssible to create');
         }
         else {

@@ -14,8 +14,8 @@ class SessionController {
     };
 
     static async getSessionByToken(tkn) {
-        const session = await UserSchema.find({ token: tkn });
         try {
+            const session = await SessionSchema.findOne({ token: tkn });
             return session;
         } catch (err) {
             return err;

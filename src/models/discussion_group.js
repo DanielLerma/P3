@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 
 const DGSchema = new mongoose.Schema(
     {
-        title: { type: String, required: true },
-        users: { type: Array, required: true },
+        title: { type: String, required: true, unique: true },
+        owner: { type: String, required: true },
+        users: { type: Array },
         messages: { type: Array },
         dateAdded: { type: Date, required: true }
     },

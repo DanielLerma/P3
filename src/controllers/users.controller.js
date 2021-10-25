@@ -26,7 +26,7 @@ class UsersController {
     };
 
     static async getUserByEmail(e) {
-        const user = await UserSchema.find({ email: e });
+        const user = await UserSchema.findOne({ email: e });
         try {
             return user;
         } catch (err) {
@@ -35,7 +35,7 @@ class UsersController {
     }
 
     static async getUserByUserName(uN) {
-        const user = await UserSchema.find({ userName: uN });
+        const user = await UserSchema.findOne({ userName: uN });
         try {
             return user;
         } catch (err) {
