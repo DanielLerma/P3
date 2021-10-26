@@ -61,7 +61,7 @@ const swaggerOptions = {
 * @swagger
 * /api/login:
 *  post:
-*    description: endpoint used to create a new user
+*    description: endpoint used to login
 *
 *    parameters:
 *      - in: body
@@ -118,6 +118,63 @@ const swaggerOptions = {
 *        description: succes response - returns user that has that email
 *      400:
 *        description: bad data request
+*/
+
+/**
+* @swagger
+* /discussion-group/:gp:
+*  get:
+*    summary: User gets the messages from that group if he is in it
+*    description: User gets the messages from that group if he is in it
+*    parameters:
+*      - in: path
+*        gp: group title
+*        description: The chat title
+*      - in: header
+*        name: x-auth
+*        description: User's token
+*    responses:
+*      200:
+*        description: Success response.
+*        schema:
+*          type: array
+*          items:
+*            type: object
+*            properties:
+*              date:
+*                type: date
+*                description: the message's addedDate
+*              author:
+*                type: string
+*                description: The username from the user that sent the message
+*              message:
+*                type: string
+*                description: the message.
+*      400:
+*        description: Error
+*        schema:
+*          type: string
+*          example: Error
+*/
+
+/**
+* @swagger
+* /discussion-group/:gp:
+*  post:
+*    summary: User posts a new message in the group
+*    description: User posts a new message in the group
+*    parameters:
+*      - in: path
+*        gp: group title
+*        description: The chat title
+*      - in: header
+*        name: x-auth
+*        description: User's token
+*    responses:
+*      200:
+*        description: Success response.
+*      400:
+*        description: Error
 */
 
 mongoose.connect(process.env.MONGO_URL,
